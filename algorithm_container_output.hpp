@@ -407,10 +407,10 @@ namespace aco {
                 std::ranges::range_size_t<tp_container_t> p_size
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_reservable_container<tp_container_t>)
-                    std::forward<tp_container_t>(p_container).reserve(p_size);
-                else reserve(std::forward<tp_container_t>(p_container), p_size);
+                    return std::forward<tp_container_t>(p_container).reserve(p_size);
+                else return reserve(std::forward<tp_container_t>(p_container), p_size);
             }
         };
     }
@@ -426,10 +426,10 @@ namespace aco {
             template <capacityable_container tp_container_t>
             auto constexpr operator() (tp_container_t&& p_container)
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_capacityable_container<tp_container_t>)
-                    std::forward<tp_container_t>(p_container).capacity();
-                else capacity(std::forward<tp_container_t>(p_container));
+                    return std::forward<tp_container_t>(p_container).capacity();
+                else return capacity(std::forward<tp_container_t>(p_container));
             }
         };
     }
@@ -445,10 +445,10 @@ namespace aco {
             template <max_sizeable_container tp_container_t>
             auto constexpr operator() (tp_container_t&& p_container)
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_max_sizeable_container<tp_container_t>)
-                    std::forward<tp_container_t>(p_container).max_size();
-                else max_size(std::forward<tp_container_t>(p_container));
+                    return std::forward<tp_container_t>(p_container).max_size();
+                else return max_size(std::forward<tp_container_t>(p_container));
             }
         };
     }
@@ -481,18 +481,18 @@ namespace aco {
                 tp_value_t&&                                  p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_emplacable_container<
                     tp_container_t,
                     tp_value_t
                 >) {
-                    std::forward<tp_container_t>(p_container).emplace(
+                    return std::forward<tp_container_t>(p_container).emplace(
                         p_position,
                         std::forward<tp_value_t>(p_value)
                     );
                 }
                 else {
-                    emplace(
+                    return emplace(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_value_t>(p_value)
@@ -529,18 +529,18 @@ namespace aco {
                 tp_value_t&&                                  p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_emplace_afterable_container<
                     tp_container_t,
                     tp_value_t
                 >) {
-                    std::forward<tp_container_t>(p_container).emplace_after(
+                    return std::forward<tp_container_t>(p_container).emplace_after(
                         p_position,
                         std::forward<tp_value_t>(p_value)
                     );
                 }
                 else {
-                    emplace_after(
+                    return emplace_after(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_value_t>(p_value)
@@ -582,15 +582,15 @@ namespace aco {
                 tp_value_t&&     p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_emplace_frontable_container<
                     tp_container_t,
                     tp_value_t
                 >) {
-                    std::forward<tp_container_t>(p_container).emplace_front(std::forward<tp_value_t>(p_value));
+                    return std::forward<tp_container_t>(p_container).emplace_front(std::forward<tp_value_t>(p_value));
                 }
                 else {
-                    emplace_front(
+                    return emplace_front(
                         std::forward<tp_container_t>(p_container),
                         std::forward<tp_value_t>(p_value)
                     );    
@@ -643,18 +643,18 @@ namespace aco {
                 tp_value_t&&                                  p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_insertable_container<
                     tp_container_t,
                     tp_value_t
                 >) {
-                    std::forward<tp_container_t>(p_container).insert(
+                    return std::forward<tp_container_t>(p_container).insert(
                         p_position,
                         std::forward<tp_value_t>(p_value)
                     );
                 }
                 else {
-                    insert(
+                    return insert(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_value_t>(p_value)
@@ -727,18 +727,18 @@ namespace aco {
                 tp_value_t&&                                  p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_insert_afterable_container<
                     tp_container_t,
                     tp_value_t
                 >) {
-                    std::forward<tp_container_t>(p_container).insert_after(
+                    return std::forward<tp_container_t>(p_container).insert_after(
                         p_position,
                         std::forward<tp_value_t>(p_value)
                     );
                 }
                 else {
-                    insert_after(
+                    return insert_after(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_value_t>(p_value)
@@ -774,14 +774,14 @@ namespace aco {
                 tp_value_t&&     p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_insert_frontable_container<
                     tp_container_t,
                     tp_value_t
                 >)
-                    std::forward<tp_container_t>(p_container).insert_front(std::forward<tp_value_t>(p_value));
+                    return std::forward<tp_container_t>(p_container).insert_front(std::forward<tp_value_t>(p_value));
                 else {
-                    insert_front(
+                    return insert_front(
                         std::forward<tp_container_t>(p_container),
                         std::forward<tp_value_t>(p_value)
                     );    
@@ -829,17 +829,17 @@ namespace aco {
                 tp_value_t&&                                  p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (emplacable_container<
                     tp_container_t,
                     tp_value_t
                 >)
-                    emplace(
+                    return emplace(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_value_t>(p_value)
                     );
-                else insert(
+                else return insert(
                     std::forward<tp_container_t>(p_container),
                     p_position,
                     std::forward<tp_value_t>(p_value)
@@ -887,17 +887,17 @@ namespace aco {
                 tp_value_t&&                                  p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (emplace_afterable_container<
                     tp_container_t,
                     tp_value_t
                 >)
-                    emplace_after(
+                    return emplace_after(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_value_t>(p_value)
                     );
-                else insert_after(
+                else return insert_after(
                     std::forward<tp_container_t>(p_container),
                     p_position,
                     std::forward<tp_value_t>(p_value)
@@ -942,17 +942,17 @@ namespace aco {
                 tp_value_t&&     p_value
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (emplace_frontable_container<
                     tp_container_t,
                     tp_value_t
                 >) {
-                    emplace_front(
+                    return emplace_front(
                         std::forward<tp_container_t>(p_container),
                         std::forward<tp_value_t>(p_value)
                     );
                 }
-                else insert_front(
+                else return insert_front(
                     std::forward<tp_container_t>(p_container),
                     std::forward<tp_value_t>(p_value)
                 );
@@ -974,10 +974,10 @@ namespace aco {
                 std::ranges::const_iterator_t<tp_container_t> p_position
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_erasable_container<tp_container_t>)
-                    std::forward<tp_container_t>(p_container).erase(p_position);
-                else erase(
+                    return std::forward<tp_container_t>(p_container).erase(p_position);
+                else return erase(
                     std::forward<tp_container_t>(p_container),
                     p_position
                 );
@@ -1006,18 +1006,18 @@ namespace aco {
                 tp_input_range_t&&                            p_range
             )
             const
-            -> void {
+            -> decltype(auto) {
                 if constexpr (non_adl_range_insertable_container<
                     tp_container_t,
                     tp_input_range_t
                 >) {
-                    std::forward<tp_container_t>(p_container).insert_range(
+                    return std::forward<tp_container_t>(p_container).insert_range(
                         p_position,
                         std::forward<tp_input_range_t>(p_range)
                     );
                 }
                 else {
-                    insert_range(
+                    return insert_range(
                         std::forward<tp_container_t>(p_container),
                         p_position,
                         std::forward<tp_input_range_t>(p_range)
