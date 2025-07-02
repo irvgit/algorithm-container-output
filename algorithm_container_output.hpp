@@ -454,7 +454,6 @@ namespace aco {
     }
     auto constexpr max_size = detail::max_size_fn{};
 
-
     template <
         typename tp_container_t,
         typename tp_value_t
@@ -795,27 +794,15 @@ namespace aco {
         typename tp_container_t,
         typename tp_value_t
     >
-    concept emplacable_or_insertable_container = requires (
-        tp_container_t&& p_container,
-        tp_value_t&&     p_value
-    ) {
-        requires (
-            requires {
-                emplace(
-                    std::forward<tp_container_t>(p_container),
-                    std::ranges::begin(p_container),
-                    std::forward<tp_value_t>(p_value)
-                );
-            } ||
-            requires {
-                insert(
-                    std::forward<tp_container_t>(p_container),
-                    std::ranges::begin(p_container),
-                    std::forward<tp_value_t>(p_value)
-                );
-            }
-        );
-    };
+    concept emplacable_or_insertable_container =
+        emplacable_container<
+            tp_container_t,
+            tp_value_t
+        > ||
+        insertable_container<
+            tp_container_t,
+            tp_value_t
+        >;
 
     namespace detail {
         struct emplace_or_insert_fn {
@@ -853,27 +840,15 @@ namespace aco {
         typename tp_container_t,
         typename tp_value_t
     >
-    concept emplace_afterable_or_insert_afterable_container = requires (
-        tp_container_t&& p_container,
-        tp_value_t&&     p_value
-    ) {
-        requires (
-            requires {
-                emplace_after(
-                    std::forward<tp_container_t>(p_container),
-                    std::ranges::begin(p_container),
-                    std::forward<tp_value_t>(p_value)
-                );
-            } ||
-            requires {
-                insert_after(
-                    std::forward<tp_container_t>(p_container),
-                    std::ranges::begin(p_container),
-                    std::forward<tp_value_t>(p_value)
-                );
-            }
-        );
-    };
+    concept emplace_afterable_or_insert_afterable_container =
+        emplace_afterable_container<
+            tp_container_t,
+            tp_value_t
+        > ||
+        insert_afterable_container<
+            tp_container_t,
+            tp_value_t
+        >;
 
     namespace detail {
         struct emplace_after_or_insert_after_fn {
@@ -911,25 +886,15 @@ namespace aco {
         typename tp_container_t,
         typename tp_value_t
     >
-    concept emplace_frontable_or_insert_frontable_container = requires (
-        tp_container_t&& p_container,
-        tp_value_t&&     p_value
-    ) {
-        requires (
-            requires {
-                emplace_front(
-                    std::forward<tp_container_t>(p_container),
-                    std::forward<tp_value_t>(p_value)
-                );
-            } ||
-            requires {
-                insert_front(
-                    std::forward<tp_container_t>(p_container),
-                    std::forward<tp_value_t>(p_value)
-                );
-            }
-        );
-    };
+    concept emplace_frontable_or_insert_frontable_container =
+        emplace_frontable_container<
+            tp_container_t,
+            tp_value_t
+        > ||
+        insert_frontable_container<
+            tp_container_t,
+            tp_value_t
+        >;
 
     namespace detail {
         struct emplace_front_or_insert_front_fn {
